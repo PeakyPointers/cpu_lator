@@ -1,6 +1,6 @@
 /**
- * @file led_on_pattern.c
- * @brief Detailed documentation and description for this program can be found in: led_on_pattern.txt in the same folder
+ * @file led_on_off_pattern.c
+ * @brief Detailed documentation and description for this program can be found in: led_on_off_pattern.txt in the same folder
  */
 
 #include <stdint.h>
@@ -23,25 +23,26 @@ void delay(int ms)
 
 int main(void)
 {
-    int i;
-    int msec = 2000; // Initial start delay of 2 seconds
+    int i, k;
+    int msec = 500; // Half-second delay for clear visibility
 
     // Pointer pointing directly to the hardware memory address of the LEDs
     volatile uint32_t *led_byte_ptr = (volatile uint32_t *)MEMORY_ADDRESS;
     
     while(1)
     {
+        // Progressively turn on LEDs one by one up to 10
         for(i = 1; i <= 10; i++)
         {
-            // Light up LEDs sequentially using bit shift
             *led_byte_ptr = (1 << i) - 1;
-            
-            // Speed up the sequence by decreasing the delay incrementally
-            msec -= 200;
             delay(msec);
         }
         
-        // Reset delay back to initial value for the next cycle loop
-        msec = 2000;
+        // Progressively step down the LEDs from 10 back to 0
+        for(k = 10; k >= 0; k--)
+        {
+            *led_byte_ptr = (1 << k) - 1;
+            delay(msec);
+        }
     }
 }

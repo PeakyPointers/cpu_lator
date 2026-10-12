@@ -1,6 +1,6 @@
 ==================================================
 PROJECT DESCRIPTION: LED Pattern Chaser
-CODE FILE: led_on_off.c
+CODE FILE: led_on_off_pattern.c
 ==================================================
 
 ## Task
