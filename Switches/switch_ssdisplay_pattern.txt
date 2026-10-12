@@ -4,13 +4,13 @@ CODE FILE: switch_ssdisplay_pattern.c
 ==================================================
 
 ## Task
-Basically, the goal here is to read individual physical slide switches, calculate a weighted total value based on which switches are active, and dynamically render that calculated number onto the hardware 7-segment displays in real-time.
+The objective of this program is to read individual physical slide switches, calculate a running total based on which switches are active using an accumulator pattern, and dynamically render that calculated number onto the hardware 7-segment displays in real-time.
 
 ## Implementation Details
-1. Memory-Mapped I/O Setup: Defined memory base addresses for LEDs (`0xff200000`), the 7-segment display (`0xff200020`), and slide switches (`0xff200040`) using volatile pointers to ensure direct hardware register reading.
-2. Segment Translation Logic: Built a lookup function (`numbtossd`) that converts numbers 0 through 9 into their precise hexadecimal bit patterns required for driving physical 7-segment display segments.
-3. Switch State Polling & Calculation: Implemented an infinite loop that isolates each switch pin using bitwise masks, tracks active states, and computes a total weighted sum.
-4. Display Formatting: Broke down the computed total into units and tens places, bit-shifted them appropriately, and updated the display register. Included header cross-documentation linking to this file.
+1. Memory-Mapped I/O Setup: Defined memory base addresses for LEDs (`0xff200000`), the 7-segment display (`0xff200020`), and slide switches (`0xff200040`) using volatile pointers to ensure direct hardware register reading without compiler optimization caching.
+2. Segment Translation Logic: Replaced cascading `if` checks with an optimized `switch-case` block (`numbtossd`) that cleanly maps digits 0 through 9 into their precise hexadecimal bit configurations for the 7-segment displays.
+3. Switch Polling & Accumulation: Implemented an infinite polling loop that resets a running `Total` variable, inspects each switch individually via bitwise masks, and accumulates the weight of active inputs.
+4. Display Formatting & Linking: Broke down the computed total into units and tens places, packed them into the hardware register via bit shifting, and included header cross-documentation pointing to this file.
 
 ## Result
-The system works flawlessly. Flipping different switches updates the calculated total instantly, showing the correct numerical value rendered cleanly across the 7-segment displays.
+The system operates smoothly and efficiently. Flipping switches updates the accumulated total instantly, showing the correct numeric value rendered cleanly across the 7-segment displays.
