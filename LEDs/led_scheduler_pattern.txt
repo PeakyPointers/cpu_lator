@@ -1,0 +1,16 @@
+==================================================
+PROJECT DESCRIPTION: Cooperative Multi-Rate LED Scheduler
+CODE FILE: led_scheduler_pattern.c
+==================================================
+
+## Task
+Basically, the goal here is to implement a lightweight cooperative task scheduler in C. Instead of doing a simple linear delay, we want to drive multiple LEDs at different frequencies/time intervals (1ms, 10ms, 100ms, and 1000ms) simultaneously using a single central loop.
+
+## Implementation Details
+1. Memory-Mapped I/O Setup: Defined the hardware base address (`0xff200000`) for the LED register using a global volatile pointer so the compiler handles hardware register accesses properly.
+2. Multi-Rate Task Functions: Created separate task functions (`task_1ms`, `task_10ms`, `task_100ms`, `task_1000ms`) that toggle specific bit positions on the LED register using the XOR operator (`^`).
+3. Cooperative Scheduler Logic: Built an infinite loop-based scheduler that increments a tick counter `i`. Using modulo arithmetic (`i % 10`, `i % 100`, `i % 1000`), it triggers the respective tasks at precise harmonic intervals.
+4. Cross-Documentation Integration: Added a header reference comment at the top of the C code pointing directly to this text file for clear repository documentation.
+
+## Result
+The code compiles and runs successfully, blinking multiple LEDs at distinct, interleaved rates concurrently from a single execution thread without getting blocked.
