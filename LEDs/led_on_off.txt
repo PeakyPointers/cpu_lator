@@ -1,0 +1,16 @@
+==================================================
+PROJECT DESCRIPTION: LED Pattern Chaser
+CODE FILE: led_on_off.c
+==================================================
+
+## Task
+Basically, the goal here is to control the hardware LEDs directly using memory-mapped I/O. We want to make the LEDs glow up progressively one by one, reach the peak, and then step back down in a continuous loop so it looks like a nice chasing pattern.
+
+## Implementation Details
+1. Memory Mapping Setup: Defined the hardware base address (0xff200000) where the LEDs are connected. Used a volatile pointer so the compiler doesn't accidentally skip or optimize our hardware writes.
+2. Custom Delay Function: Built a simple delay mechanism using a `nop` assembly instruction loop. This ensures the microcontroller pauses long enough for a human eye to actually see the LED transitions.
+3. Bit-Shifting Logic: Used an infinite `while` loop combined with the bitwise shift operator `(1 << i) - 1`. One loop increases the light count from 1 up to 10, and the reverse loop steps it back down smoothly.
+4. Linked Documentation: Added a header comment in the C code pointing directly to this text file for clear context.
+
+## Result
+Everything works like absolute butter! When loaded onto the hardware/emulator, the LEDs execute a smooth up-and-down pattern with a steady 500ms delay between steps, looping continuously without any glitches.
