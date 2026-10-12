@@ -9,21 +9,23 @@
 #define MEMORY_ADDRESS_SSDISPLAY 0xff200020
 #define MEMORY_ADDRESS_SWITCH 0xff200040
     
-// Helper function utilizing a switch-case block to map numbers (0-9) to 7-segment display hex bit patterns
+// Helper function using a structured switch-case with a single return point to map digits (0-9) to 7-segment hex values
 int numbtossd(int numb){
+    int numret;
     switch(numb){
-    case 0: return 0x3F;
-    case 1: return 0x06;
-    case 2: return 0x5B;
-    case 3: return 0x4F;
-    case 4: return 0x66;
-    case 5: return 0x6D;
-    case 6: return 0x7D;
-    case 7: return 0x07;
-    case 8: return 0x7F;
-    case 9: return 0x6F;
-    default: return 0x00;
+    case 0: numret = 0x3F; break;
+    case 1: numret = 0x06; break;
+    case 2: numret = 0x5B; break;
+    case 3: numret = 0x4F; break;
+    case 4: numret = 0x66; break;
+    case 5: numret = 0x6D; break;
+    case 6: numret = 0x7D; break;
+    case 7: numret = 0x07; break;
+    case 8: numret = 0x7F; break;
+    case 9: numret = 0x6F; break;
+    default: numret = 0x00;
     }
+    return numret;
 }
 
 // Function to split the total numeric value into digits and write them to the 7-segment display register
@@ -42,61 +44,18 @@ void ssdislay(int total)
 int main(void)
 {
     // Pointer to the memory-mapped slide switches hardware register
-    // volatile uint32_t *led_byte_ptr = (volatile uint32_t *)MEMORY_ADDRESS_LED;
     volatile uint32_t *switch_byte_ptr = (volatile uint32_t *)MEMORY_ADDRESS_SWITCH;
+    int k = 0; // Loop counter for iterating through switch pins
     
     while(1)
     {
         int Total = 0; // Reset total accumulator for each polling cycle
         
-        // Check state of the 0th switch and add its weighted value if active
-        if((*switch_byte_ptr & (uint32_t)(0x00000001)) == (uint32_t)(0x00000001)){
-            Total += 0;
-        }
-        
-        // Check state of the 1st switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000002)) == (uint32_t)(0x00000002)){
-            Total += 1;
-        }
-        
-        // Check state of the 2nd switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000004)) == (uint32_t)(0x00000004)){
-            Total += 2;
-        }
-        
-        // Check state of the 3rd switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000008)) == (uint32_t)(0x00000008)){
-            Total += 3;
-        }
-        
-        // Check state of the 4th switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000010)) == (uint32_t)(0x00000010)){
-            Total += 4;
-        }
-        
-        // Check state of the 5th switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000020)) == (uint32_t)(0x00000020)){
-            Total += 5;
-        }
-
-        // Check state of the 6th switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000040)) == (uint32_t)(0x00000040)){
-            Total += 6;
-        }
-        
-        // Check state of the 7th switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000080)) == (uint32_t)(0x00000080)){
-            Total += 7;
-        }
-        
-        // Check state of the 8th switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000100)) == (uint32_t)(0x00000100)){
-            Total += 8;
-        }
-
-        // Check state of the 9th switch
-        if((*switch_byte_ptr & (uint32_t)(0x00000200)) == (uint32_t)(0x00000200)){
-            Total += 9;
+        // Compact loop checking all 10 switches dynamically using bitwise shifting (`1 << k`)
+        for(k = 0; k < 10; k++){
+            if((*switch_byte_ptr & (uint32_t)(1 << k)) == (uint32_t)(1 << k)){
+                Total += k; // Add switch index weight if the switch is active
+            }
         }
 
         // Send the final accumulated total value to the 7-segment display function
