@@ -1,0 +1,16 @@
+==================================================
+PROJECT DESCRIPTION: Edge-Triggered Switch Counter & Multi-Digit Display
+CODE FILE: switch_counter_pattern.c
+==================================================
+
+## Task
+The objective of this program is to implement an edge-triggered event counter using physical slide switches. Pressing/toggling the first switch increments an internal counter value on each rising edge, while a second switch resets the counter back to zero, with the result rendered dynamically across multi-digit 7-segment displays.
+
+## Implementation Details
+1. Memory-Mapped I/O Setup: Defined base hardware memory addresses for slide switches (`0xff200040`) and 7-segment displays (`0xff200020`) using volatile pointers to ensure real-time hardware access.
+2. Multi-Digit Segment Decoding: Utilized a structured `switch-case` digit decoder (`numbtossd`) and an expanded `ssdisplay` routine that breaks down numbers into units, tens, and hundreds places, packing them via bit shifting (`<< 8`, `<< 16`).
+3. Rising-Edge Detection Logic: Implemented state-tracking variables (`switch_st_lat` and `switch_st_last`) inside an infinite polling loop to detect clean button press transitions (rising edges), preventing continuous holding loops from spamming increments.
+4. Reset Control & Documentation: Added dedicated reset switch polling to instantly zero out the counter, paired with clean repository documentation header comments.
+
+## Result
+The code functions exceptionally well. Each distinct toggle of the input switch increments the counter cleanly by 1 without bouncing issues, and the multi-digit 7-segment display updates smoothly up to hundreds.
