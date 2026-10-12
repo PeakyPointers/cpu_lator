@@ -1,0 +1,15 @@
+==================================================
+PROJECT DESCRIPTION: Switch-Controlled LED Mirror
+CODE FILE: switch_led_control.c
+==================================================
+
+## Task
+Basically, the goal here is to read the physical state of the hardware switches and directly mirror that state onto the LEDs. When a switch is turned on or off, the corresponding LED should instantly respond in real-time.
+
+## Implementation Details
+1. Memory-Mapped I/O Setup: Defined two hardware memory addresses—one for the LEDs (`0xff200000`) and another for the slide switches (`0xff200040`). Used `volatile` pointers for both to ensure the compiler reads directly from the hardware registers every single time.
+2. Continuous Polling Loop: Created an infinite `while(1)` loop that constantly fetches the latest value from the switch pointer and writes it straight to the LED pointer.
+3. Cross-Documentation Integration: Included a header reference comment at the top of the C code pointing directly to this text file for project documentation.
+
+## Result
+Everything works smoothly! Flipping any physical switch on the board immediately updates the LED states in real-time without any lag or delay.
