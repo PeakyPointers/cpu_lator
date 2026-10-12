@@ -1,0 +1,16 @@
+==================================================
+PROJECT DESCRIPTION: Switch-Driven 7-Segment Display Counter
+CODE FILE: switch_ssdisplay_pattern.c
+==================================================
+
+## Task
+Basically, the goal here is to read individual physical slide switches, calculate a weighted total value based on which switches are active, and dynamically render that calculated number onto the hardware 7-segment displays in real-time.
+
+## Implementation Details
+1. Memory-Mapped I/O Setup: Defined memory base addresses for LEDs (`0xff200000`), the 7-segment display (`0xff200020`), and slide switches (`0xff200040`) using volatile pointers to ensure direct hardware register reading.
+2. Segment Translation Logic: Built a lookup function (`numbtossd`) that converts numbers 0 through 9 into their precise hexadecimal bit patterns required for driving physical 7-segment display segments.
+3. Switch State Polling & Calculation: Implemented an infinite loop that isolates each switch pin using bitwise masks, tracks active states, and computes a total weighted sum.
+4. Display Formatting: Broke down the computed total into units and tens places, bit-shifted them appropriately, and updated the display register. Included header cross-documentation linking to this file.
+
+## Result
+The system works flawlessly. Flipping different switches updates the calculated total instantly, showing the correct numerical value rendered cleanly across the 7-segment displays.
