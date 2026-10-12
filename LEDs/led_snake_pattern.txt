@@ -1,0 +1,16 @@
+==================================================
+PROJECT DESCRIPTION: LED Snake Pattern Chaser
+CODE FILE: led_snake_pattern.c
+==================================================
+
+## Task
+The objective of this program is to control hardware LEDs via memory-mapped I/O using a sequence that shifts bits to turn LEDs off and back on sequentially, creating a creeping snake-like lighting pattern across the board.
+
+## Implementation Details
+1. Memory-Mapped I/O Configuration: Defined the base LED memory address (`0xff200000`) and declared a volatile pointer to protect hardware access from compiler optimization.
+2. Custom Timing Function: Implemented a millisecond delay routine (`delayms`) utilizing an assembly `nop` loop running at a fixed 1-second interval.
+3. Bitwise State Manipulation: Used logical bit-shifting combined with custom conditional checks (`if-else` blocks managing specific transition states like `i != 4`) to dynamically update the active LED register pattern.
+4. Cross-Documentation Integration: Included a header reference comment at the top of the C code pointing directly to this text file for documentation clarity.
+
+## Result
+The code compiles and runs successfully on the target hardware/emulator, seamlessly cycling through the sequential snake shutdown and custom rebuild states at steady 1-second intervals.
